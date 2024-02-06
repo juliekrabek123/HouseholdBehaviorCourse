@@ -49,7 +49,7 @@ class ConSavModelClass(EconModelClass):
         sim = self.sim
         
         # a. asset grid
-        par.a_grid = nonlinspace(0.0,par.a_max,par.Na,1.1)
+        par.a_grid = nonlinspace(0.0,par.a_max,par.Na,1.1) # 1.1 is the curvature parameter (higher values gives more points close to 0)
 
         # b. income
         par.yt = par.y * np.ones(par.T)
@@ -78,8 +78,8 @@ class ConSavModelClass(EconModelClass):
         
         # b. solve last period
         t = par.T-1
-        sol.c[t,:] = par.a_grid + par.yt[t]
-        sol.V[t,:] = self.util(sol.c[t,:])
+        sol.c[t,:] = par.a_grid + par.yt[t] # saving + income 
+        sol.V[t,:] = self.util(sol.c[t,:]) # value is utility from consumption in last period
 
         # c. loop backwards [note, the last element, N, in range(N) is not included in the loop due to index starting at 0]
         for t in reversed(range(par.T-1)):
@@ -143,7 +143,7 @@ class ConSavModelClass(EconModelClass):
         sol = self.sol
         sim = self.sim
 
-        # b. loop over individuals and time
+        # b. loop over individuals (simN, i) and time (simT, t)
         for i in range(par.simN):
 
             # i. initialize assets
